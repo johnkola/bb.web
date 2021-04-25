@@ -1,6 +1,7 @@
 #!groovy
 def app
-def version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
+def version
+
 pipeline {
     agent any
 
@@ -74,6 +75,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
+                    version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
                     app = docker.build("johnkola/bb-web")
                 }
             }
