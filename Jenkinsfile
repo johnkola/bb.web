@@ -1,8 +1,5 @@
 pipeline {
-    agent {
-        // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
-        dockerfile true
-    }
+    agent any
 
     tools{
         maven 'M3'
@@ -74,12 +71,14 @@ pipeline {
                 /*
         			You would need to first register with DockerHub before you can push images to your account
         		*/
+        		script {
                 docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credential') {
                     app.push("${env.BUILD_NUMBER}")
                     app.push("latest")
                     }
                     echo "Trying to Push Docker Build to DockerHub"
-            }
+                }
+        }
 
     }
 }
