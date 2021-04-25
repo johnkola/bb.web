@@ -70,7 +70,7 @@ pipeline {
         stage('Push image') {
         		steps {
                     script {
-                        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credential') {
+                        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-registry-credential') {
                             //app.push("${env.BUILD_NUMBER}")
                             //app.push("latest")
                             }
