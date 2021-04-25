@@ -12,7 +12,6 @@ pipeline {
                 sh "java -version"
                 sh "git --version"
                 sh "mvn --version"
-                git branch: 'develop', url: 'https://github.com/johnkola/activeweb.git'
             }
         }
         
