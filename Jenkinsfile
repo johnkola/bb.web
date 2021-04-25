@@ -16,8 +16,6 @@ pipeline {
 
         stage('Clone the project') {
             steps {
-
-
                 sh "java -version"
                 sh "git --version"
                 sh "./mvnw --version"
@@ -27,7 +25,7 @@ pipeline {
 
         stage("Compilation and Analysis") {
             when {
-                expression { params.fullBuild}  == true }
+                expression { params.fullBuild == true }
             }
             steps {
                 parallel(
@@ -75,7 +73,7 @@ pipeline {
 //         }
         stage("Package..") {
             when {
-                expression { params.fullBuild}  == true }
+                expression { params.fullBuild == true }
             }
             steps {
                 sh "./mvnw package"
