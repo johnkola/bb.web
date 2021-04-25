@@ -10,8 +10,6 @@ pipeline {
     tools {
         maven 'M3'
     }
-
-
     stages {
 
         stage('Clone the project') {
@@ -25,9 +23,9 @@ pipeline {
                 sh "java -version"
                 sh "git --version"
                 sh "./mvnw --version"
-                echo ("name: ${name}")
-                echo ("version: ${version}")
-                echo ("description: ${description}")
+                echo("name: ${name}")
+                echo("version: ${version}")
+                echo("description: ${description}")
             }
         }
 
@@ -80,31 +78,30 @@ pipeline {
         stage("Package..") {
             steps {
                 sh "./mvnw package"
+                sh "dir ./target"
             }
         }
 
-        stage('Build image') {
-            steps {
-                script {
-
-
-                    app = docker.build("johnkola/bb-web")
-                }
-            }
-        }
-
-        stage('Push image') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-registry-credential') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                        app.push("${version}")
-                    }
-                    echo "Trying to Push Docker Build to DockerHub"
-                }
-            }
-        }
+//        stage('Build image') {
+//            steps {
+//                script {
+//                    app = docker.build("johnkola/bb-web")
+//                }
+//            }
+//        }
+//
+//        stage('Push image') {
+//            steps {
+//                script {
+//                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-registry-credential') {
+//                        app.push("${env.BUILD_NUMBER}")
+//                        app.push("latest")
+//                        app.push("${version}")
+//                    }
+//                    echo "Trying to Push Docker Build to DockerHub"
+//                }
+//            }
+//        }
 
     }
 }
