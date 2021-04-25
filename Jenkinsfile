@@ -28,30 +28,32 @@ pipeline {
                 echo("description: ${description}")
             }
         }
-        when {
-            expression { params.fullBuild}
 
-            stage("Compilation and Analysis") {
-                steps {
 
-                    parallel(
-                            'Compilation': {
-                                sh "./mvnw clean install -DskipTests"
-                            },
-                            'Static Analysis': {
-                                sh "./mvnw checkstyle:checkstyle-aggregate"
-                                // step([$class: 'CheckStylePublisher',
-                                //   canRunOnFailed: true,
-                                //   defaultEncoding: '',
-                                //   healthy: '100',
-                                //   pattern: '**/target/checkstyle-result.xml',
-                                //   unHealthy: '90',
-                                //   useStableBuildAsReference: true
-                                // ])
-                            }
-                    )
-                }
+        stage("Compilation and Analysis") {
+//            when {
+//                expression { "${fullBuild}"}
+//            }
+//            steps {
+                parallel(
+                        'Compilation': {
+                            sh "./mvnw clean install -DskipTests"
+                        },
+                        'Static Analysis': {
+                            sh "./mvnw checkstyle:checkstyle-aggregate"
+                            // step([$class: 'CheckStylePublisher',
+                            //   canRunOnFailed: true,
+                            //   defaultEncoding: '',
+                            //   healthy: '100',
+                            //   pattern: '**/target/checkstyle-result.xml',
+                            //   unHealthy: '90',
+                            //   useStableBuildAsReference: true
+                            // ])
+                        }
+                )
             }
+        }
+
 
 //         stage("Tests and Deployment") {
 //             steps{
@@ -77,13 +79,13 @@ pipeline {
 //                 )
 //             }
 //         }
-            stage("Package..") {
-                steps {
-                    sh "./mvnw package"
-                    sh "dir ./target"
-                }
+        stage("Package..") {
+            steps {
+                sh "./mvnw package"
+                sh "dir ./target"
             }
         }
+
         stage('Build image') {
             steps {
                 script {
@@ -104,6 +106,6 @@ pipeline {
                 }
             }
         }
-
     }
+
 }
