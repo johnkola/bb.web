@@ -69,8 +69,11 @@ pipeline {
         }
 
          stage('Build image') {
-
-                app = docker.build("anandr72/nodeapp")
+            steps {
+                    script {
+                    app = docker.build("anandr72/nodeapp")
+                    }
+            }
          }
 
 
