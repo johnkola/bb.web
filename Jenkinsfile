@@ -20,6 +20,7 @@ pipeline {
         
         stage("Compilation and Analysis") {
             steps{
+
                 parallel (
                     'Compilation' : {
                         sh "mvn clean install -DskipTests"
@@ -68,6 +69,17 @@ pipeline {
                 sh "mvn package"
             }
         }
+
+        stage('Push image') {
+                /*
+        			You would need to first register with DockerHub before you can push images to your account
+        		*/
+                docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credential') {
+                    app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
+                    }
+                    echo "Trying to Push Docker Build to DockerHub"
+            }
 
     }
 }
