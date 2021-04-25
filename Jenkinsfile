@@ -37,30 +37,30 @@ pipeline {
             }
         }
 
-        stage("Tests and Deployment") {
-            steps{
-                parallel (
-                    'Running unit tests' :{
-                        script {
-                            try{
-                                sh 'mvn test -Punit'
-                            }finally {
-                                //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*UnitTest.xml'])
-                            }
-                        }
-                    },
-                    'Running integration tests' :{
-                        script {
-                            try{
-                                sh "mvn test -Pintegration"
-                            }finally {
-                                //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*IntegrationTest.xml'])
-                            }
-                        }
-                    }
-                )
-            }
-        }
+//         stage("Tests and Deployment") {
+//             steps{
+//                 parallel (
+//                     'Running unit tests' :{
+//                         script {
+//                             try{
+//                                 sh 'mvn test -Punit'
+//                             }finally {
+//                                 //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*UnitTest.xml'])
+//                             }
+//                         }
+//                     },
+//                     'Running integration tests' :{
+//                         script {
+//                             try{
+//                                 sh "mvn test -Pintegration"
+//                             }finally {
+//                                 //step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*IntegrationTest.xml'])
+//                             }
+//                         }
+//                     }
+//                 )
+//             }
+//         }
         stage("Package..") {
             steps{
                 sh "mvn package"
