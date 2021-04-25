@@ -60,5 +60,11 @@ pipeline {
                 )
             }
         }
+        stage {
+            steps{
+                sh "mvn package"
+            }
+        }
+
     }
 }
