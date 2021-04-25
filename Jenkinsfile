@@ -33,7 +33,7 @@ pipeline {
 
         stage("Compilation and Analysis") {
             when {
-                expression { "${param.fullBuild}" }
+                expression { "${fullBuild}" }
             }
             steps {
                 parallel(
