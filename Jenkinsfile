@@ -1,3 +1,4 @@
+def app
 pipeline {
     agent any
 
@@ -66,6 +67,12 @@ pipeline {
                 sh "mvn package"
             }
         }
+
+         stage('Build image') {
+
+                app = docker.build("anandr72/nodeapp")
+         }
+
 
         stage('Push image') {
         		steps {
