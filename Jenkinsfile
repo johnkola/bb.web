@@ -64,7 +64,7 @@ pipeline {
 //         }
         stage("Package..") {
             steps{
-                sh "mvn package"
+                sh "./mvnw package"
             }
         }
 
@@ -81,6 +81,7 @@ pipeline {
                         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-registry-credential') {
                             app.push("${env.BUILD_NUMBER}")
                             app.push("latest")
+
                             }
                             echo "Trying to Push Docker Build to DockerHub"
                 }
