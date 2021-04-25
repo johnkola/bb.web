@@ -28,28 +28,30 @@ pipeline {
                 echo("description: ${description}")
             }
         }
+        when {
+            expression { params.fullBuild}
 
-        stage("Compilation and Analysis") {
-            steps {
+            stage("Compilation and Analysis") {
+                steps {
 
-                parallel(
-                        'Compilation': {
-                            sh "./mvnw clean install -DskipTests"
-                        },
-                        'Static Analysis': {
-                            sh "./mvnw checkstyle:checkstyle-aggregate"
-                            // step([$class: 'CheckStylePublisher',
-                            //   canRunOnFailed: true,
-                            //   defaultEncoding: '',
-                            //   healthy: '100',
-                            //   pattern: '**/target/checkstyle-result.xml',
-                            //   unHealthy: '90',
-                            //   useStableBuildAsReference: true
-                            // ])
-                        }
-                )
+                    parallel(
+                            'Compilation': {
+                                sh "./mvnw clean install -DskipTests"
+                            },
+                            'Static Analysis': {
+                                sh "./mvnw checkstyle:checkstyle-aggregate"
+                                // step([$class: 'CheckStylePublisher',
+                                //   canRunOnFailed: true,
+                                //   defaultEncoding: '',
+                                //   healthy: '100',
+                                //   pattern: '**/target/checkstyle-result.xml',
+                                //   unHealthy: '90',
+                                //   useStableBuildAsReference: true
+                                // ])
+                            }
+                    )
+                }
             }
-        }
 
 //         stage("Tests and Deployment") {
 //             steps{
@@ -75,33 +77,33 @@ pipeline {
 //                 )
 //             }
 //         }
-        stage("Package..") {
+            stage("Package..") {
+                steps {
+                    sh "./mvnw package"
+                    sh "dir ./target"
+                }
+            }
+        }
+        stage('Build image') {
             steps {
-                sh "./mvnw package"
-                sh "dir ./target"
+                script {
+                    app = docker.build("johnkola/bb-web")
+                }
             }
         }
 
-//        stage('Build image') {
-//            steps {
-//                script {
-//                    app = docker.build("johnkola/bb-web")
-//                }
-//            }
-//        }
-//
-//        stage('Push image') {
-//            steps {
-//                script {
-//                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-registry-credential') {
-//                        app.push("${env.BUILD_NUMBER}")
-//                        app.push("latest")
-//                        app.push("${version}")
-//                    }
-//                    echo "Trying to Push Docker Build to DockerHub"
-//                }
-//            }
-//        }
+        stage('Push image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-registry-credential') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                        app.push("${version}")
+                    }
+                    echo "Trying to Push Docker Build to DockerHub"
+                }
+            }
+        }
 
     }
 }
