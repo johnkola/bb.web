@@ -16,24 +16,18 @@ pipeline {
 
         stage('Clone the project') {
             steps {
-                script {
-                    version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
-                    name = sh script: 'mvn help:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true
-                    description = sh script: 'mvn help:evaluate -Dexpression=project.description -q -DforceStdout', returnStdout: true
-                }
+
 
                 sh "java -version"
                 sh "git --version"
                 sh "./mvnw --version"
-                echo("name: ${name}")
-                echo("version: ${version}")
-                echo("description: ${description}")
+
             }
         }
 
         stage("Compilation and Analysis") {
             when {
-                expression { "${params.fullBuild}" }
+                expression { "${params.fullBuild == true}" }
             }
             steps {
                 parallel(
@@ -81,7 +75,7 @@ pipeline {
 //         }
         stage("Package..") {
             when {
-                expression { "${params.fullBuild}" }
+                expression { "${params.fullBuild == true}" }
             }
             steps {
                 sh "./mvnw package"
@@ -91,6 +85,13 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
+                    version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
+                    name = sh script: 'mvn help:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true
+                    description = sh script: 'mvn help:evaluate -Dexpression=project.description -q -DforceStdout', returnStdout: true
+                    echo("name: ${name}")
+                    echo("version: ${version}")
+                    echo("description: ${description}")
+
                     app = docker.build("johnkola/bb-web")
                 }
             }
