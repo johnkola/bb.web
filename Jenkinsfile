@@ -22,7 +22,7 @@ pipeline {
                         sh "mvn clean install -DskipTests"
                     },
                     'Static Analysis' : {
-                       // sh "mvn checkstyle:checkstyle"
+                       sh "mvn checkstyle:checkstyle-aggregate"
                         // step([$class: 'CheckStylePublisher',
                         //   canRunOnFailed: true,
                         //   defaultEncoding: '',
