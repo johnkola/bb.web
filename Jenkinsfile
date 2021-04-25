@@ -71,7 +71,7 @@ pipeline {
          stage('Build image') {
             steps {
                     script {
-                        app = docker.build("johnkola/john-repo")                    }
+                        app = docker.build("johnkola/bb-web")                    }
             }
          }
 
