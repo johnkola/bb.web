@@ -80,6 +80,9 @@ pipeline {
 //             }
 //         }
         stage("Package..") {
+            when {
+                expression { "${params.fullBuild}" }
+            }
             steps {
                 sh "./mvnw package"
             }
