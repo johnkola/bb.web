@@ -10,6 +10,8 @@ pipeline {
     tools {
         maven 'M3'
     }
+
+
     stages {
 
         stage('Clone the project') {
@@ -29,12 +31,11 @@ pipeline {
             }
         }
 
-
         stage("Compilation and Analysis") {
-//            when {
-//                expression { "${fullBuild}"}
-//            }
-//            steps {
+            when {
+                expression { "${param.fullBuild}" }
+            }
+            steps {
                 parallel(
                         'Compilation': {
                             sh "./mvnw clean install -DskipTests"
@@ -53,7 +54,6 @@ pipeline {
                 )
             }
         }
-
 
 //         stage("Tests and Deployment") {
 //             steps{
@@ -82,7 +82,6 @@ pipeline {
         stage("Package..") {
             steps {
                 sh "./mvnw package"
-                sh "dir ./target"
             }
         }
 
@@ -106,6 +105,6 @@ pipeline {
                 }
             }
         }
-    }
 
+    }
 }
