@@ -1,4 +1,3 @@
-CMD ["echo", "Dockerfile first line"]
 FROM openjdk:8-jdk-alpine
 MAINTAINER john <john.kolahdouzan@gmail.com>
 RUN apt-get update
