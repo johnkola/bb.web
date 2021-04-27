@@ -97,14 +97,20 @@ pipeline {
 
         stage('Push image') {
             steps {
-                script {
-                    docker.withRegistry('https://us.icr.io', 'docker-hub-registry-credential') {
-                        //app.push("${env.BUILD_NUMBER}")
-                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "_" + "latest")
-                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "_" + "${version}")
-                    }
-                    echo "Trying to Push Docker Build to DockerHub"
-                }
+
+                sh
+                """"
+                ibmcloud cr login
+                
+                
+//                    docker.withRegistry('https://us.icr.io', 'docker-hub-registry-credential') {
+//                        //app.push("${env.BUILD_NUMBER}")
+//                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "_" + "latest")
+//                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "_" + "${version}")
+//                    }
+//                    echo "Trying to Push Docker Build to DockerHub"
+                
+                """
             }
         }
 
