@@ -90,7 +90,7 @@ pipeline {
                     echo("version: ${version}")
                     echo("description: ${description}")
 
-                    app = docker.build("johnkola/${name})
+                    app = docker.build("johnkola/${name}")
                 }
             }
         }
