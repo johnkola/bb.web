@@ -64,7 +64,7 @@ spec:
           securityContext:
             {}
           image: "docker.io/johnkola/bb-web:lts"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 8080
@@ -72,13 +72,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /profile
-              port: 8081
+              port: 8080
             initialDelaySeconds: 120
             periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /profile
-              port: 8081
+              port: 8080
             initialDelaySeconds: 120
             periodSeconds: 30
           resources:
