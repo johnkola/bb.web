@@ -40,13 +40,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /profile
-              port: 8081
+              port: 8080
             initialDelaySeconds: 120
             periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /profile
-              port: 8081
+              port: 8080
             initialDelaySeconds: 120
             periodSeconds: 30
           resources:

@@ -12,8 +12,10 @@
 #kubectl get ingress -n csi-dev  --watch
 #kubectl get svc -n csi-dev
 
-ibmcloud login -a cloud.ibm.com -apikey YxaF7mgbfnGmQJSckZiMxlrVwPj0Ssr4MIGLEAV20Tiu -r us-east -g Default
-ibmcloud ks cluster config --cluster c229pavw0ht6snnn198g
+ibmcloud login -a cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-east -g Default
+
+
+ibmcloud ks cluster config --cluster c225rl1d0qbq4r52kp10
 ibmcloud plugin install container-service
 ibmcloud plugin install observe-service
 ibmcloud plugin list
