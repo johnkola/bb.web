@@ -20,6 +20,21 @@ pipeline {
 //    }
 
     stages {
+
+        stage('K8s') {
+            steps {
+
+            withKubeConfig([credentialsId: 'apikey', serverUrl: 'https://cloud.ibm.com']) {
+                                sh 'kubectl apply -f deploy.yaml'
+            }
+
+
+
+
+            echo "Trying to Push Docker Build to DockerHub"
+        }
+    }
+
         stage('Set the params') {
             steps {
 
@@ -120,14 +135,7 @@ pipeline {
             }
         }
 
-        stage('K8s') {
-            steps {
 
-                    sh 'kubectl version'
-
-                    echo "Trying to Push Docker Build to DockerHub"
-            }
-        }
     }
     post {
         always {
