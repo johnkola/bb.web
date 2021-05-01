@@ -100,8 +100,8 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-registry-credential') {
                         app.push("${env.BUILD_NUMBER}")
-                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "_" + "latest")
-                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "_" + "${version}")
+                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "-lts")
+                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "-${version}")
                     }
                 }
                 echo "Trying to Push Docker Build to DockerHub"
@@ -111,12 +111,10 @@ pipeline {
         stage('K8s') {
             steps {
                 script {
-
-
+                    helm version
                     echo "Trying to Push Docker Build to DockerHub"
                 }
             }
         }
-
     }
 }

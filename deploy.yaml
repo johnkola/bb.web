@@ -1,25 +1,25 @@
 ---
-# Source: web-app/templates/serviceaccount.yaml
+# Source: bb-web/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: web-app
+  name: bb-web
   labels:
-    helm.sh/chart: web-app-0.1.0
-    app.kubernetes.io/name: web-app
-    app.kubernetes.io/instance: web-app
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 ---
-# Source: web-app/templates/service.yaml
+# Source: bb-web/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-app
+  name: bb-web
   labels:
-    helm.sh/chart: web-app-0.1.0
-    app.kubernetes.io/name: web-app
-    app.kubernetes.io/instance: web-app
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -30,37 +30,37 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: web-app
-    app.kubernetes.io/instance: web-app
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
 ---
-# Source: web-app/templates/deployment.yaml
+# Source: bb-web/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-app
+  name: bb-web
   labels:
-    helm.sh/chart: web-app-0.1.0
-    app.kubernetes.io/name: web-app
-    app.kubernetes.io/instance: web-app
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: web-app
-      app.kubernetes.io/instance: web-app
+      app.kubernetes.io/name: bb-web
+      app.kubernetes.io/instance: bb-web
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: web-app
-        app.kubernetes.io/instance: web-app
+        app.kubernetes.io/name: bb-web
+        app.kubernetes.io/instance: bb-web
     spec:
-      serviceAccountName: web-app
+      serviceAccountName: bb-web
       securityContext:
         {}
       containers:
-        - name: web-app
+        - name: bb-web
           securityContext:
             {}
           image: "docker.io/johnkola/bb-web:lts"
@@ -84,44 +84,24 @@ spec:
           resources:
             {}
 ---
-# Source: web-app/templates/ingress.yaml
+# Source: bb-web/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: web-app
+  name: bb-web
   labels:
-    helm.sh/chart: web-app-0.1.0
-    app.kubernetes.io/name: web-app
-    app.kubernetes.io/instance: web-app
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   rules:
-    - host: "bazarbozorg.com.ir.ca"
+    - host: "eastrug.com"
       http:
         paths:
           - path: 
             backend:
-              serviceName: web-app
+              serviceName: bb-web
               servicePort: 80
----
-# Source: web-app/templates/tests/test-connection.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: "web-app-test-connection"
-  labels:
-    helm.sh/chart: web-app-0.1.0
-    app.kubernetes.io/name: web-app
-    app.kubernetes.io/instance: web-app
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-    "helm.sh/hook": test
-spec:
-  containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args: ['web-app:80']
-  restartPolicy: Never
+

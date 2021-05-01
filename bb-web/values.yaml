@@ -1,4 +1,4 @@
-# Default values for web-app.
+# Default values for bb-web.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -50,7 +50,7 @@ ingress:
       paths:
       - path:
         backend:
-          serviceName: web-app
+          serviceName: bb-web
           servicePort: 80
   tls: []
   #  - secretName: chart-example-tls

@@ -10,28 +10,44 @@
 #helm install bb-web ./eih-base-helm --namespace csi-dev --create-namespace --set service.type=NodePort
 #helm install bb-web ./eih-base-helm --namespace csi-dev --create-namespace --set ingress.enabled=true --set image.repository=nginx
 #kubectl get ingress -n csi-dev  --watch
-#kubectl get svc -n csi-dev
 
-ibmcloud login -a cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-east -g Default
-
-
+#Install the IBM Cloud CLI
+ibmcloud login -a cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-south -g Default
 ibmcloud ks cluster config --cluster c225rl1d0qbq4r52kp10
 ibmcloud plugin install container-service
+ibmcloud plugin install container-registry
 ibmcloud plugin install observe-service
 ibmcloud plugin list
-kubectl config current-context
 
-ibmcloud cr build --no-cache --quiet --tag us.icr.io/bb-web/bb-web:lts --build-arg JAR_FILE=./target/*.jar .
+#Install the Docker CLI
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo docker run hello-world
+
+
+sudo service docker stop
+sudo rm -rf /var/lib/docker
+sudo service docker start
+sudo systemctl restart docker
+sudo chmod 666 /var/run/docker.sock
+
 sudo docker build -t johnkola/bb-web:lts --build-arg JAR_FILE=./target/*.jar .
 sudo docker run johnkola/bb-web:lts
 sudo docker push johnkola/bb-web:lts
+
+#Install the Container Registry plug-in.
+ibmcloud plugin install container-registry -r 'IBM Cloud'
+ibmcloud login -a https://cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-south -g Default
+
+ibmcloud cr build --no-cache --quiet --tag us.icr.io/bb-web/bb-web:lts --build-arg JAR_FILE=./target/*.jar .
 kubectl get nodes
+kubectl config current-context
 
 #helm install bb-web ./eih-base-helm --namespace csi-dev --create-namespace
-helm delete web-app --namespace csi-dev
-helm install  web-app ./web-app --namespace csi-dev --create-namespace
-helm template web-app ./web-app --namespace csi-dev --create-namespace
-helm upgrade  web-app ./web-app --namespace csi-dev --create-namespace
+helm delete bb-web --namespace csi-dev
+helm install  bb-web ./bb-web --namespace csi-dev --create-namespace
+helm template bb-web ./bb-web --namespace csi-dev --create-namespace
+helm upgrade  bb-web ./bb-web --namespace csi-dev --create-namespace
 
 docker push us.icr.io/bb-web/bb-web:lts
 
