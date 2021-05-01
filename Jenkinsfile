@@ -26,8 +26,9 @@ pipeline {
 
 
                 sh 'ibmcloud login -a cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-south -g Default'
+                sleep 60
                 sh 'ibmcloud ks cluster config --cluster c225rl1d0qbq4r52kp10'
-                sh 'kubectl apply -f deploy.yaml'
+                sh 'kubectl apply -f deploy.yaml -n csi-dev'
 
                 echo "Trying to Push Docker Build to DockerHub"
             }
