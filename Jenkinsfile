@@ -31,11 +31,7 @@ pipeline {
                     app_artifactId = sh script: 'mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout', returnStdout: true
                     app_image_name = "${app_registry_hub_docker_namespace}/${app_name}"
                 }
-                echo("name: ${app_name}")
-                echo("version: ${app_version}")
-                echo("description: ${app_description}")
-                echo("artifactId: ${app_artifactId}")
-                echo ("image_name: ${app_image_name}")
+                echo("name: ${app_name}\nversion: ${app_version}\ndescription: ${app_description}\nartifactId: ${app_artifactId}\nimage_name: ${app_image_name}")
             }
         }
 
