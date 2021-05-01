@@ -24,7 +24,7 @@ pipeline {
         stage('K8s') {
             steps {
 
-                withKubeConfig([credentialsId: 'apikey', serverUrl: 'https://cloud.ibm.com' , clusterName: 'c225rl1d0qbq4r52kp10' ]) {
+                withKubeConfig([credentialsId: 'K8s-apikey', serverUrl: 'https://cloud.ibm.com' , clusterName: 'c225rl1d0qbq4r52kp10' ]) {
                     sh 'kubectl apply -f deploy.yaml -n csi-dev'
                 }
 
