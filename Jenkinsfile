@@ -123,10 +123,8 @@ pipeline {
         stage('K8s') {
             steps {
 
-                    sh
-                    """
-                        helm version
-                    """
+                    sh 'helm version'
+
                     echo "Trying to Push Docker Build to DockerHub"
             }
         }
