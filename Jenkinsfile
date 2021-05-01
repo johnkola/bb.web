@@ -103,11 +103,16 @@ pipeline {
         stage('Push image') {
             steps {
                 script {
-                    docker.withRegistry("${app_registry_hub_docker}", 'docker-hub-registry-credential') {
-                        app_docker.push("${env.BUILD_NUMBER}")
-                        app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "-lts")
-                        app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "-${version}")
+                    try {
+                        docker.withRegistry("${app_registry_hub_docker}", 'docker-hub-registry-credential') {
+                            app_docker.push("${env.BUILD_NUMBER}")
+                            app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-lts")
+                            app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-${version}")
+                        }
+                    }catch (e){
+                        e.printStackTrace()
                     }
+
                 }
                 echo "Trying to Push Docker Build to DockerHub"
             }
