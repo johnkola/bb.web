@@ -106,7 +106,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential") {
+                        docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential2") {
                             app_docker.push("${env.BUILD_NUMBER}")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-lts")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-${version}")
