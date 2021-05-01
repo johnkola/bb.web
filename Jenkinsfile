@@ -24,10 +24,10 @@ pipeline {
         stage('K8s') {
             steps {
 
-                withKubeConfig([credentialsId: 'K8s-apikey', serverUrl: 'https://cloud.ibm.com' , clusterName: 'c225rl1d0qbq4r52kp10' ]) {
-                    sh 'kubectl apply -f deploy.yaml -n csi-dev'
-                }
 
+                sh 'ibmcloud login -a cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-south -g Default'
+                sh 'ibmcloud ks cluster config --cluster c225rl1d0qbq4r52kp10'
+                sh 'kubectl apply -f deploy.yaml'
 
                 echo "Trying to Push Docker Build to DockerHub"
             }
