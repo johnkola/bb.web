@@ -23,16 +23,6 @@ pipeline {
         stage('Set the params') {
             steps {
 
-                withCredentials([usernamePassword(credentialsId: 'amazon', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    // available as an env variable, but will be masked if you try to print it out any which way
-                    // note: single quotes prevent Groovy interpolation; expansion is by Bourne Shell, which is what you want
-                    sh 'echo $PASSWORD'
-                    // also available as a Groovy variable
-                    echo USERNAME
-                    // or inside double quotes for string interpolation
-                    echo "username is $USERNAME"
-                }
-
                 sh "java -version"
                 sh "git --version"
                 sh "./mvnw --version"
@@ -116,7 +106,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        docker.withRegistry("${app_registry_hub_docker}", "${docker-hub-registry-credential}") {
+                        docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential") {
                             app_docker.push("${env.BUILD_NUMBER}")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-lts")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-${version}")
