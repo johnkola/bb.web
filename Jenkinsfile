@@ -95,7 +95,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    app_docker = docker.build("app_image_name")
+                    app_docker = docker.build("${app_image_name}")
                 }
             }
         }
