@@ -7,6 +7,7 @@ def app_artifactId
 def app_registry_hub_docker_namespace = "johnkola"
 def app_registry_hub_docker = "https://registry.hub.docker.com"
 def app_image_name
+def docker_hub_registry_credential
 pipeline {
     agent any
 
@@ -14,9 +15,9 @@ pipeline {
         maven 'M3'
     }
 //
-//    environments {
-//
-//    }
+    environments {
+            docker_hub_registry_credential = credential("docker_hub_registry_credential")
+    }
 
     stages {
         stage('Set the params') {
@@ -104,14 +105,13 @@ pipeline {
             steps {
                 script {
                     try {
-                        docker.withRegistry("${app_registry_hub_docker}", 'docker-hub-registry-credential') {
+                        docker.withRegistry("${app_registry_hub_docker}", "${docker-hub-registry-credential}") {
                             app_docker.push("${env.BUILD_NUMBER}")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-lts")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-${version}")
                         }
                     }catch (e){
                         echo "error ${e.getMessage()}"
-                        throw  e
                     }
 
                 }
