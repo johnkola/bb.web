@@ -1,25 +1,39 @@
 #!groovy
-def app
-def version
-def description
-def name
-
+def app_docker
+def app_version
+def app_description
+def app_name
+def app_artifactId
+def app_registry_hub_docker_namespace = "johnkola"
+def app_registry_hub_docker = "https://registry.hub.docker.com"
+def app_image_name
 pipeline {
     agent any
 
     tools {
         maven 'M3'
     }
-
+//
+//    environments {
+//
+//    }
 
     stages {
-
-        stage('Clone the project') {
+        stage('Set the params') {
             steps {
                 sh "java -version"
                 sh "git --version"
                 sh "./mvnw --version"
-
+                app_version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
+                app_name = sh script: 'mvn help:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true
+                app_description = sh script: 'mvn help:evaluate -Dexpression=project.description -q -DforceStdout', returnStdout: true
+                app_artifactId = sh script: 'mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout', returnStdout: true
+                echo("name: ${app_name}")
+                echo("version: ${app_version}")
+                echo("description: ${app_description}")
+                echo("artifactId: ${app_artifactId}")
+                app_image_name = "${app_registry_hub_docker_namespace}/${app_artifactId}"
+                echo ("image_name: ${app_image_name}")
             }
         }
 
@@ -83,14 +97,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
-                    name = sh script: 'mvn help:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true
-                    description = sh script: 'mvn help:evaluate -Dexpression=project.description -q -DforceStdout', returnStdout: true
-                    echo("name: ${name}")
-                    echo("version: ${version}")
-                    echo("description: ${description}")
-
-                    app = docker.build("johnkola/${name}")
+                    app_docker = docker.build("app_image_name")
                 }
             }
         }
@@ -98,10 +105,10 @@ pipeline {
         stage('Push image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-registry-credential') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "-lts")
-                        app.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "-${version}")
+                    docker.withRegistry("${app_registry_hub_docker}", 'docker-hub-registry-credential') {
+                        app_docker.push("${env.BUILD_NUMBER}")
+                        app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "-lts")
+                        app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/","") + "-${version}")
                     }
                 }
                 echo "Trying to Push Docker Build to DockerHub"
@@ -111,7 +118,10 @@ pipeline {
         stage('K8s') {
             steps {
                 script {
-                    helm version
+                    sh
+                    """
+                        helm version
+                    """
                     echo "Trying to Push Docker Build to DockerHub"
                 }
             }
