@@ -110,7 +110,8 @@ pipeline {
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-${version}")
                         }
                     }catch (e){
-                        e.printStackTrace()
+                        echo "error ${e.getMessage()}"
+                        throw  e
                     }
 
                 }
