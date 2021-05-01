@@ -15,7 +15,7 @@ pipeline {
         maven 'M3'
     }
 //
-    environments {
+    environment {
             docker_hub_registry_credential = credential("docker_hub_registry_credential")
     }
 
