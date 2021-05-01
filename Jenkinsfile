@@ -24,16 +24,14 @@ pipeline {
         stage('K8s') {
             steps {
 
-            withKubeConfig([credentialsId: 'apikey', serverUrl: 'https://cloud.ibm.com']) {
-                                sh 'kubectl apply -f deploy.yaml'
+                withKubeConfig([credentialsId: 'apikey', serverUrl: 'https://cloud.ibm.com' , clusterName: 'c225rl1d0qbq4r52kp10' ]) {
+                    sh 'kubectl apply -f deploy.yaml -n csi-dev'
+                }
+
+
+                echo "Trying to Push Docker Build to DockerHub"
             }
-
-
-
-
-            echo "Trying to Push Docker Build to DockerHub"
         }
-    }
 
         stage('Set the params') {
             steps {
@@ -126,7 +124,7 @@ pipeline {
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-lts")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-${app_version}")
                         }
-                    }catch (e){
+                    } catch (e) {
                         echo "Error: ${e.getMessage()}"
                     }
 
