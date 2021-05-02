@@ -12,7 +12,9 @@
 #kubectl get ingress -n csi-dev  --watch
 
 #Install the IBM Cloud CLI
-ibmcloud login -a cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-south -g Default
+
+
+ibmcloud login -a https://cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-south -g Default
 ibmcloud ks cluster config --cluster c225rl1d0qbq4r52kp10
 ibmcloud plugin install container-service
 ibmcloud plugin install container-registry
@@ -53,4 +55,6 @@ docker push us.icr.io/bb-web/bb-web:lts
 
 docker login -u iamapikey -p YxaF7mgbfnGmQJSckZiMxlrVwPj0Ssr4MIGLEAV20Tiu https://private.us.icr.io
 
+######GOLD
+sudo docker exec -u 0 -it  jenkins-blueocean  bash
 

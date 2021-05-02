@@ -26,9 +26,10 @@ pipeline {
 
 
                 sh 'ibmcloud login -a cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-south -g Default'
-                sleep 60
+                sleep 30
                 sh 'ibmcloud ks cluster config --cluster c225rl1d0qbq4r52kp10'
-                sh 'kubectl apply -f deploy.yaml -n csi-dev'
+
+                sh 'helm upgrade  bb-web ./bb-web --namespace csi-dev --create-namespace'
 
                 echo "Trying to Push Docker Build to DockerHub"
             }

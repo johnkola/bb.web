@@ -63,7 +63,7 @@ spec:
         - name: bb-web
           securityContext:
             {}
-          image: "docker.io/johnkola/bb-web:lts"
+          image: "docker.io/johnkola/bazarbozorg-web-adds:dev-lts"
           imagePullPolicy: Always
           ports:
             - name: http
