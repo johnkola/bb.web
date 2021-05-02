@@ -96,6 +96,9 @@ pipeline {
         }
 
         stage('Build image') {
+            when {
+                expression { params.fullBuild == true }
+            }
             steps {
                 script {
                     docker.withRegistry("${app_registry_hub_docker}", "docker_hub_registry_credential") {
@@ -106,6 +109,9 @@ pipeline {
         }
 
         stage('Push image') {
+            when {
+                expression { params.fullBuild == true }
+            }
             steps {
 
                 script {
