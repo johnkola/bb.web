@@ -58,3 +58,8 @@ docker login -u iamapikey -p YxaF7mgbfnGmQJSckZiMxlrVwPj0Ssr4MIGLEAV20Tiu https:
 ######GOLD
 sudo docker exec -u 0 -it  jenkins-blueocean  bash
 
+ibmcloud ks cluster ls
+ibmcloud ks cluster config --cluster mycluster-free
+
+
+
