@@ -99,7 +99,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential2") {
+                    docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential") {
                         app_docker = docker.build("${app_image_name}")
                     }
                 }
@@ -111,7 +111,7 @@ pipeline {
 
                 script {
                     try {
-                        docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential2") {
+                        docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential") {
                             app_docker.push("${env.BUILD_NUMBER}")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-lts")
                             app_docker.push("${env.GIT_BRANCH}".replaceAll("origin/", "") + "-${app_version}")
