@@ -99,13 +99,16 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    app_docker = docker.build("${app_image_name}")
+                    docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential2") {
+                        app_docker = docker.build("${app_image_name}")
+                    }
                 }
             }
         }
 
         stage('Push image') {
             steps {
+
                 script {
                     try {
                         docker.withRegistry("${app_registry_hub_docker}", "docker-hub-registry-credential2") {
