@@ -7,7 +7,7 @@ def app_artifactId
 def app_registry_hub_docker_namespace = "johnkola"
 def app_registry_hub_docker = "https://registry.hub.docker.com"
 def app_image_name
-def docker_hub_registry_credential
+
 pipeline {
     agent any
 
@@ -24,17 +24,16 @@ pipeline {
 
         stage('Set the params') {
             steps {
-
-                sh "java -version"
-                sh "git --version"
-                sh "./mvnw --version"
-                script {
+               script {
                     app_version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
                     app_name = sh script: 'mvn help:evaluate -Dexpression=project.name -q -DforceStdout', returnStdout: true
                     app_description = sh script: 'mvn help:evaluate -Dexpression=project.description -q -DforceStdout', returnStdout: true
                     app_artifactId = sh script: 'mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout', returnStdout: true
                     app_image_name = "${app_registry_hub_docker_namespace}/${app_name}"
                 }
+                sh "java -version"
+                sh "git --version"
+                sh "./mvnw --version"
                 echo("name: ${app_name}\nversion: ${app_version}\ndescription: ${app_description}\nartifactId: ${app_artifactId}\nimage_name: ${app_image_name}")
             }
         }
