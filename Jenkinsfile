@@ -134,14 +134,12 @@ pipeline {
             steps {
 
 
-                sh 'ibmcloud login -a cloud.ibm.com -apikey ue7-3G7AQAxKL9jVMLXhZBC5Kw82PA4F1BiQQbozG4Iw -r us-south -g Default'
-                sleep 30
-                sh 'ibmcloud ks cluster config --cluster c225rl1d0qbq4r52kp10'
-                sleep 30
-                sh 'helm delete bb-web --namespace csi-dev'
-                sh 'helm install  bb-web ./bb-web --namespace csi-dev --create-namespace'
+                sh 'ibmcloud login -a cloud.ibm.com -apikey 4g813hlM1lm1_sThLhNf4ZGAUzd0lL63-tRXhjB0kJr6 -r us-south -g Default'
+                sh 'ibmcloud ks cluster config --cluster c27mubqd0epa7fshtg00'
+                sh 'ibmcloud cr build --no-cache --quiet --tag us.icr.io/bb-web/bb-web:lts --build-arg JAR_FILE=./target/*.jar .'
 
-                echo "Trying to Push Docker Build to DockerHub"
+
+
             }
         }
 
