@@ -136,7 +136,7 @@ pipeline {
 
                 sh 'ibmcloud login -a cloud.ibm.com -apikey 4g813hlM1lm1_sThLhNf4ZGAUzd0lL63-tRXhjB0kJr6 -r us-south -g Default'
                 sh 'ibmcloud ks cluster config --cluster c27mubqd0epa7fshtg00'
-                sh 'ibmcloud cr build --no-cache --quiet --tag us.icr.io/bb-web/bb-web:lts --build-arg JAR_FILE=./target/*.jar .'
+                sh 'ibmcloud build --no-cache --quiet --tag us.icr.io/bb-web/bb-web:lts --build-arg JAR_FILE=./target/*.jar .'
 
 
 
