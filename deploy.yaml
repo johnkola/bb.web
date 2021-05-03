@@ -10,6 +10,8 @@ metadata:
     app.kubernetes.io/instance: bb-web
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
+imagePullSecrets:
+  - name: all-icr-io
 ---
 # Source: bb-web/templates/service.yaml
 apiVersion: v1
@@ -62,7 +64,7 @@ spec:
         - name: bb-web
           securityContext:
             {}
-          image: "docker.io/johnkola/bb-web:lts"
+          image: "us.icr.io/bb-web/bb-web:lts"
           imagePullPolicy: Always
           ports:
             - name: http
@@ -72,13 +74,13 @@ spec:
             httpGet:
               path: /profile
               port: 8080
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /profile
               port: 8080
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 30
           resources:
             {}

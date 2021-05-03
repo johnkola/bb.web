@@ -60,6 +60,5 @@ sudo docker exec -u 0 -it  jenkins-blueocean  bash
 
 ibmcloud ks cluster ls
 ibmcloud ks cluster config --cluster mycluster-free
-
-
-
+kubectl config get-contexts
+kubectl get secret all-icr-io -n default -o yaml | sed 's/default/csi-dev/g' | kubectl create -n csi-dev -f -
