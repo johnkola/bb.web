@@ -56,9 +56,15 @@ docker push us.icr.io/bb-web/bb-web:lts
 docker login -u iamapikey -p YxaF7mgbfnGmQJSckZiMxlrVwPj0Ssr4MIGLEAV20Tiu https://private.us.icr.io
 
 ######GOLD
+#*****
 sudo docker exec -u 0 -it  jenkins-blueocean  bash
+#*****
+kubectl config get-contexts
+kubectl config get-clusters
+kubectl config get-users
+kubectl config use-context
 
 ibmcloud ks cluster ls
 ibmcloud ks cluster config --cluster mycluster-free
-kubectl config get-contexts
+
 kubectl get secret all-icr-io -n default -o yaml | sed 's/default/csi-dev/g' | kubectl create -n csi-dev -f -

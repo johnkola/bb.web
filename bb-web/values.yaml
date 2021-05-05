@@ -10,6 +10,20 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
 
+  containerPort: 8081
+
+livenessProbe:
+  path: /profile
+  port: 8081
+  initialDelaySeconds: 120
+  periodSeconds: 30
+
+readinessProbe:
+  path: /profile
+  port: 8081
+  initialDelaySeconds: 120
+  periodSeconds: 30
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -38,7 +52,8 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 8081
+  targetPort: 8081
 
 ingress:
   enabled: true
@@ -51,11 +66,12 @@ ingress:
       - path:
         backend:
           serviceName: bb-web
-          servicePort: 8080
+          servicePort: 8081
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -73,7 +89,7 @@ autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 100
-  targetCPUUtilizationPercentage: 8080
+  targetCPUUtilizationPercentage: 8081
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
