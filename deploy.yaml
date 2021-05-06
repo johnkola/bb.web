@@ -1,0 +1,89 @@
+---
+# Source: bb-web/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bb-web
+  labels:
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: bb-web/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bb-web
+  labels:
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 
+      targetPort: 
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
+---
+# Source: bb-web/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bb-web
+  labels:
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+
+---
+# Source: bb-web/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: bb-web
+  labels:
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  rules:
+    - host: "eastrug.com"
+      http:
+        paths:
+          - path: 
+            backend:
+              serviceName: bb-web
+              servicePort:
+---
+# Source: bb-web/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "bb-web-test-connection"
+  labels:
+    helm.sh/chart: bb-web-0.1.0
+    app.kubernetes.io/name: bb-web
+    app.kubernetes.io/instance: bb-web
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['bb-web:']
+  restartPolicy: Never
